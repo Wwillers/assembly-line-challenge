@@ -47,7 +47,7 @@ public class UploadController {
         // save the file on the local file system
         try {
             Path path = Paths.get(UPLOAD_DIR + fileName);
-            translateTaskFile.translateTaskFileToTaskList(path.toString());
+            translateTaskFile.fromAssemblyLineTaskFile(path.toString());
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();

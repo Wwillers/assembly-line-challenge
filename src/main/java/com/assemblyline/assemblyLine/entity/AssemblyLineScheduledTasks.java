@@ -3,8 +3,9 @@ package com.assemblyline.assemblyLine.entity;
 import lombok.Data;
 
 @Data
-public class AssemblyLineTask {
+public class AssemblyLineScheduledTasks {
 
+    private int hour;
     private String taskName;
-    private int taskTime;
+    private String taskTime;
 }

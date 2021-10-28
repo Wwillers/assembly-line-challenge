@@ -18,21 +18,26 @@ public class TranslateTaskFile {
     @Autowired
     private AssemblyLineSchedule assemblyLineSchedule;
 
-    public List<AssemblyLineTask> translateTaskFileToTaskList(String file) {
+    public List<AssemblyLineTask> fromAssemblyLineTaskFile(String file) {
         try {
-            List<String> tasksList = Files.readAllLines(Paths.get(file));
-            List<AssemblyLineTask> tasks = tasksList.stream().map(task -> {
-                String taskName = task.substring(0, task.lastIndexOf(" ")).replace("-", "");
-                String taskTime = task.substring(task.lastIndexOf(" ") + 1).replace("min", "");
-                AssemblyLineTask lineTask = new AssemblyLineTask();
-                lineTask.setTaskName(taskName);
-                lineTask.setTaskTime(taskTime);
-                return lineTask;
-            }).collect(Collectors.toList());
-            assemblyLineSchedule.processScheduleInfo(tasks);
+            List<String> taskList = Files.readAllLines(Paths.get(file));
+            List<AssemblyLineTask> assemblyLineTasks = toAssemblyLineTaskList(taskList);
+            assemblyLineSchedule.processScheduleInfo(assemblyLineTasks);
         } catch (Exception e) {
             log.error("Falha ao traduzir arquivo, causa: {}", e.getMessage());
         }
         return Collections.emptyList();
+    }
+
+    private List<AssemblyLineTask> toAssemblyLineTaskList(List<String> taskList) {
+        return taskList.stream().map(task -> {
+            String taskName = task.substring(0, task.lastIndexOf(" ")).replace("-", "");
+            String replacedMaintenance = task.replace("maintenance", "5");
+            String taskTime = replacedMaintenance.substring(task.lastIndexOf(" ") + 1).replace("min", "");
+            AssemblyLineTask lineTask = new AssemblyLineTask();
+            lineTask.setTaskName(taskName);
+            lineTask.setTaskTime(Integer.parseInt(taskTime));
+            return lineTask;
+        }).collect(Collectors.toList());
     }
 }
