@@ -15,16 +15,13 @@ import java.util.stream.Collectors;
 @Service
 public class TranslateTaskFile {
 
-    @Autowired
-    private AssemblyLineSchedule assemblyLineSchedule;
-
     public List<AssemblyLineTask> fromAssemblyLineTaskFile(String file) {
         try {
             List<String> taskList = Files.readAllLines(Paths.get(file));
-            List<AssemblyLineTask> assemblyLineTasks = toAssemblyLineTaskList(taskList);
-            assemblyLineSchedule.processScheduleInfo(assemblyLineTasks);
+            return toAssemblyLineTaskList(taskList);
         } catch (Exception e) {
             log.error("Falha ao traduzir arquivo, causa: {}", e.getMessage());
+            log.debug(e);
         }
         return Collections.emptyList();
     }

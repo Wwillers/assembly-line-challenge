@@ -12,11 +12,13 @@ import java.util.stream.Collectors;
 @Service
 public class AssemblyLineSchedule {
 
-    @Autowired
-    private RecursiveSchedule recursiveSchedule;
-
     private static int MORNING_TIME_MINUTES = 180;
     private static int AFTERNOON_TIME_MINUTES = 240;
+    private static int LAUNCH_TIME = 540;
+    public static final int GYM_TIME = 780;
+
+    @Autowired
+    private RecursiveSchedule recursiveSchedule;
 
     public void processScheduleInfo(List<AssemblyLineTask> taskList) {
 
@@ -37,30 +39,10 @@ public class AssemblyLineSchedule {
         }
     }
 
-    private void outputMorningSchedule(AssemblyLineTask lineTask, Duration duration) {
-        long hours = duration.toHours();
-        long minutes = duration.minusHours(hours).toMinutes();
-        if (duration.toMinutes() == 540) {
-            System.out.println("09:00 " + lineTask.getTaskName() + " " + lineTask.getTaskTime());
-            return;
-        }
-        System.out.println(String.format("%d:%02d %s %d min", hours, minutes, lineTask.getTaskName(), lineTask.getTaskTime()));
-    }
-
-    private void outputAfternoonSchedule(AssemblyLineTask lineTask, Duration duration) {
-        long hours = duration.toHours();
-        long minutes = duration.minusHours(hours).toMinutes();
-        if (duration.toMinutes() == 780) {
-            System.out.println("13:00 " + lineTask.getTaskName() + " " + lineTask.getTaskTime());
-            return;
-        }
-        System.out.println(String.format("%d:%02d %s %d min", hours, minutes, lineTask.getTaskName(), lineTask.getTaskTime()));
-    }
-
     private List<AssemblyLineTask> recursiveProcessSchedule(List<AssemblyLineTask> assemblyLineTasks, List<Integer> scheduleTasksTime, int time, boolean firstSchedule) {
         List<Integer> morningSchedule = recursiveSchedule.findSchedulePossibilities(scheduleTasksTime, time);
         if (firstSchedule) {
-            Duration duration = Duration.ofMinutes(540);
+            Duration duration = Duration.ofMinutes(LAUNCH_TIME);
             for (Integer i : morningSchedule) {
                 AssemblyLineTask task = assemblyLineTasks.stream().filter(element -> i.equals(element.getTaskTime())).findFirst().orElse(null);
                 if (task != null) {
@@ -74,7 +56,7 @@ public class AssemblyLineSchedule {
             return recursiveProcessSchedule(assemblyLineTasks, scheduleTasksTime, AFTERNOON_TIME_MINUTES, false);
         }
 
-        Duration duration = Duration.ofMinutes(780);
+        Duration duration = Duration.ofMinutes(GYM_TIME);
         for (Integer i : morningSchedule) {
             AssemblyLineTask task = assemblyLineTasks.stream().filter(element -> i.equals(element.getTaskTime())).findFirst().orElse(null);
             if (task != null) {
@@ -86,5 +68,25 @@ public class AssemblyLineSchedule {
         }
         System.out.println(String.format("%d:%02d Ginástica laboral", duration.toHours(), duration.minusHours(duration.toHours()).toMinutes()));
         return assemblyLineTasks;
+    }
+
+    private void outputMorningSchedule(AssemblyLineTask lineTask, Duration duration) {
+        long hours = duration.toHours();
+        long minutes = duration.minusHours(hours).toMinutes();
+        if (duration.toMinutes() == LAUNCH_TIME) {
+            System.out.println("09:00 " + lineTask.getTaskName() + " " + lineTask.getTaskTime());
+            return;
+        }
+        System.out.println(String.format("%d:%02d %s %d min", hours, minutes, lineTask.getTaskName(), lineTask.getTaskTime()));
+    }
+
+    private void outputAfternoonSchedule(AssemblyLineTask lineTask, Duration duration) {
+        long hours = duration.toHours();
+        long minutes = duration.minusHours(hours).toMinutes();
+        if (duration.toMinutes() == GYM_TIME) {
+            System.out.println("13:00 " + lineTask.getTaskName() + " " + lineTask.getTaskTime());
+            return;
+        }
+        System.out.println(String.format("%d:%02d %s %d min", hours, minutes, lineTask.getTaskName(), lineTask.getTaskTime()));
     }
 }
