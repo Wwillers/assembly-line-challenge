@@ -8,8 +8,8 @@ import java.util.List;
 @Service
 public class RecursiveSchedule {
 
-    private static int MIN_WORK_TIME = 180;
-    private static int MAX_WORK_TIME = 240;
+    private static final int MIN_WORK_TIME = 180;
+    private static final int MAX_WORK_TIME = 240;
 
     static List<Integer> sum_up_recursive(List<Integer> numbers, int target, List<Integer> partial) {
         int s = 0;

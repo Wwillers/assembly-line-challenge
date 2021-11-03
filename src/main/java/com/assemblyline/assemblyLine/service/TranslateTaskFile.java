@@ -2,7 +2,6 @@ package com.assemblyline.assemblyLine.service;
 
 import com.assemblyline.assemblyLine.entity.AssemblyLineTask;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
