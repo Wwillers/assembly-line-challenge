@@ -1,4 +1,9 @@
 # Assembly Line Challenge
+![<Wwillers>](https://img.shields.io/circleci/build/github/Wwillers/assembly-line-challenge)
+[![CircleCI](https://badgen.net/badge/icon/circleci?icon=circleci&label)](https://https://circleci.com/)  
+[![Docker](https://badgen.net/badge/icon/docker?icon=docker&label)](https://https://docker.com/)
+[![Maven](https://badgen.net/badge/icon/maven?icon=maven&label)](https://https://maven.apache.org/)
+  
 
 ## Problem Statement - Assembly Line
 
